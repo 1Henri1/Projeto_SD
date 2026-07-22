@@ -8,7 +8,7 @@ entity sm_add_test is
       KEY           : in  std_logic_vector(1 downto 0);
       SW            : in  std_logic_vector(9 downto 0);
 
-      LEDR          : out std_logic_vector(9 downto 0);
+      LEDR          : out std_logic_vector(3 downto 0);
 
       HEX0          : out std_logic_vector(6 downto 0);
       HEX1          : out std_logic_vector(6 downto 0);
@@ -25,7 +25,7 @@ architecture arch of sm_add_test is
 
    signal oct_a, oct_b, oct_sum : std_logic_vector(3 downto 0);
 
-   signal segA, segB, segSUM : std_logic_vector(7 downto 0);
+   signal segA, segB, segSUM : std_logic_vector(6 downto 0);
 
 begin
 
@@ -43,10 +43,7 @@ begin
    ------------------------------------------------------------------
    -- LEDs
    ------------------------------------------------------------------
-   LEDR(3 downto 0) <= SW(3 downto 0);
-   LEDR(7 downto 4) <= SW(7 downto 4);
-   LEDR(8) <= sum(3);
-   LEDR(9) <= '0';
+   LEDR(3 downto 0) <= sum(3 downto 0);
 
    ------------------------------------------------------------------
    -- Magnitudes
@@ -61,41 +58,38 @@ begin
    dispA : entity work.hex_to_sseg
       port map(
          hex  => oct_a,
-         dp   => '1',
          sseg => segA
       );
 
    dispB : entity work.hex_to_sseg
       port map(
          hex  => oct_b,
-         dp   => '1',
          sseg => segB
       );
 
    dispSUM : entity work.hex_to_sseg
       port map(
          hex  => oct_sum,
-         dp   => '1',
          sseg => segSUM
       );
 
    ------------------------------------------------------------------
    -- Magnitudes
    ------------------------------------------------------------------
-   HEX4 <= segA(6 downto 0);
-   HEX2 <= segB(6 downto 0);
+   HEX2 <= segA(6 downto 0);
+   HEX4 <= segB(6 downto 0);
    HEX0 <= segSUM(6 downto 0);
 
    ------------------------------------------------------------------
    -- Sinais
    ------------------------------------------------------------------
-   HEX5 <= "1111110" when SW(3)='1' else
-           "0001100";
+   HEX3 <= "0111111" when SW(3)='1' else
+           "1111111";
 
-   HEX3 <= "1111110" when SW(7)='1' else
-           "0001100";
+   HEX5 <= "0111111" when SW(7)='1' else
+           "1111111";
 
-   HEX1 <= "1111110" when sum(3)='1' else
-           "0001100";
+   HEX1 <= "0111111" when sum(3)='1' else
+           "1111111";
 
 end arch;
