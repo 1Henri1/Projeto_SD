@@ -22,7 +22,11 @@ begin
    -- sort according to magnitude
    process(mag_a,mag_b,sign_a,sign_b)
    begin
-      if mag_a = mag_b then
+      if mag_a = mag_b AND sign_a /= sign_b then
+         max <= mag_a;
+         min <= mag_b;
+         sign_sum <= '0';
+      elsif mag_a = "000" AND mag_b = "000" then
          max <= mag_a;
          min <= mag_b;
          sign_sum <= '0';
